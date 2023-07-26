@@ -1,6 +1,8 @@
 from flask import Blueprint
 from init import db, bcrypt
 from models.user import User
+from models.diary import Diary
+from datetime import date
 
 db_commands = Blueprint('db', __name__)
 
@@ -23,4 +25,15 @@ def seed_db():
         )
     ]
     db.session.add_all(users)
+
+    diaries = [
+        Diary(
+            user = users[0],
+            diary_title = "My First Diary"
+        )
+    ]
+
+    db.session.add_all(diaries)
+
+
     db.session.commit()
