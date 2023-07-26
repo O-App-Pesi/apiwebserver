@@ -2,6 +2,7 @@ from flask import Blueprint
 from init import db, bcrypt
 from models.user import User
 from models.diary import Diary
+from models.meal import Meal
 from datetime import date
 
 db_commands = Blueprint('db', __name__)
@@ -35,5 +36,16 @@ def seed_db():
 
     db.session.add_all(diaries)
 
+    meals = [
+        Meal(
+            user = users[0],
+            meal_name = "Delicious Teriyaki",
+            is_takeaway = True,
+            kilojoules = 8000,
+            notes = "made me fart"
+        )
+    ]
+
+    db.session.add_all(meals)
 
     db.session.commit()

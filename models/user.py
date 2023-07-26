@@ -9,9 +9,11 @@ class User(db.Model):
     password = db.Column(db.String(255), nullable=False)
 
     diaries = db.relationship('Diary', back_populates='user', cascade='all, delete')
+    meals = db.relationship('Meal', back_populates='user', cascade='all, delete')
 
 class UserSchema(ma.Schema):
     diaries = fields.List(fields.Nested('DiarySchema', exclude=['user']))
+    meals = fields.List(fields.Nested('MealSchema', exclude=['user']))
     class Meta:
         fields = ('user_id', 'email', 'password', 'diaries')
 
