@@ -1,15 +1,19 @@
 from init import db, ma
+from marshmallow import fields
 
 class User(db.Model):
     __tablename__ = 'users'
 
-    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(255), nullable=False, unique=True)
     password = db.Column(db.String(255), nullable=False)
 
+    diaries = db.relationship('Diary', back_populates='user', cascade='all, delete')
+
 class UserSchema(ma.Schema):
+    diaries = fields.List(fields.Nested('DiarySchema', exclude=['user']))
     class Meta:
-        fields = ('id', 'email', 'password')
+        fields = ('user_id', 'email', 'password', 'diaries')
 
 user_schema = UserSchema(exclude=['password'])
 users_schema = UserSchema(many=True, exclude=['password'])
