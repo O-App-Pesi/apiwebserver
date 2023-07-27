@@ -37,7 +37,7 @@ def auth_login():
     user = db.session.scalar(stmt)
 
     if user and bcrypt.check_password_hash(user.password, body_data.get('password')):
-        token = create_access_token(identity=str(user.id), expires_delta=timedelta(days=1))
+        token = create_access_token(identity=str(user.user_id), expires_delta=timedelta(days=1))
         return { 'email': user.email, 'token': token }
     else:
         return { 'error': 'Invalid email or password' }, 401
