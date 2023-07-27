@@ -15,7 +15,7 @@ class UserSchema(ma.Schema):
     diaries = fields.List(fields.Nested('DiarySchema', exclude=['user']))
     meals = fields.List(fields.Nested('MealSchema', exclude=['user']))
     class Meta:
-        fields = ('user_id', 'email', 'password', 'diaries')
+        fields = ('user_id', 'email', 'password', 'diaries', 'meals')
 
 user_schema = UserSchema(exclude=['password'])
 users_schema = UserSchema(many=True, exclude=['password'])

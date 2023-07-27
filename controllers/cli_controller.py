@@ -3,6 +3,7 @@ from init import db, bcrypt
 from models.user import User
 from models.diary import Diary
 from models.meal import Meal
+from models.diary_entry import Diary_Entry
 from datetime import date
 
 db_commands = Blueprint('db', __name__)
@@ -48,4 +49,12 @@ def seed_db():
 
     db.session.add_all(meals)
 
+    diary_entries = [
+        Diary_Entry(
+            diary = diaries[0],
+            meal = meals[0]
+        )
+    ]
+
+    db.session.add_all(diary_entries)
     db.session.commit()

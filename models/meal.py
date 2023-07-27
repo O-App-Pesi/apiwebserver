@@ -12,10 +12,11 @@ class Meal(db.Model):
     notes = db.Column(db.String(255))
 
     user = db.relationship('User', back_populates='meals')
+    diary_entries = db.relationship('Diary', back_populates='diary', cascade='all, delete')
 
 class MealSchema(ma.Schema):
     user = fields.Nested('UserSchema', only=['email'])
-
+    diary_entries = fields.List(fields.Nested('DiarySchema'), exclude=['diary'])
     class Meta:
         fields = ('meal_id', 'users_user_id', 'meal_name', 'is_takeaway', 'kilojoules', 'notes')
         ordered = True
