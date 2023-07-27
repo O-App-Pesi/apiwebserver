@@ -6,6 +6,6 @@ meals_bp = Blueprint('meals', __name__, url_prefix='/meals')
 
 @meals_bp.route('/')
 def get_all_meals():
-    stmt = db.select(Meal).order_by(Meal.diary_title.desc())
-    diaries = db.session.scalars(stmt)
-    return meals_schema.dump(diaries)
+    stmt = db.select(Meal).order_by(Meal.meal_name.desc())
+    meals = db.session.scalars(stmt)
+    return meals_schema.dump(meals)

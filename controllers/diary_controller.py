@@ -7,7 +7,7 @@ diaries_bp = Blueprint('diaries', __name__, url_prefix='/diary')
 
 @diaries_bp.route('/')
 def get_all_diaries():
-    stmt = db.select(Diary).order_by(Diary.diary_title.desc())
+    stmt = db.select(Diary)
     diaries = db.session.scalars(stmt) #multiple scalars
     return diaries_schema.dump(diaries)
 

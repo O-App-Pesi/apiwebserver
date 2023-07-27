@@ -12,7 +12,7 @@ class Meal(db.Model):
     notes = db.Column(db.String(255))
 
     user = db.relationship('User', back_populates='meals')
-    diary_entries = db.relationship('Diary', back_populates='diary', cascade='all, delete')
+    diary_entries = db.relationship('DiaryEntry', back_populates='meal', cascade='all, delete')
 
 class MealSchema(ma.Schema):
     user = fields.Nested('UserSchema', only=['email'])

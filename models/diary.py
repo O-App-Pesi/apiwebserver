@@ -9,7 +9,7 @@ class Diary(db.Model):
     diary_title = db.Column(db.String(100))
 
     user = db.relationship('User', back_populates='diaries')
-    diary_entries = db.relationship('Diary', back_populates='diary', cascade='all, delete')
+    diary_entries = db.relationship('DiaryEntry', back_populates='diary', cascade='all, delete')
 
 class DiarySchema(ma.Schema):
     user = fields.Nested('UserSchema', only=['email'])

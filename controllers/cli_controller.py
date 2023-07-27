@@ -3,7 +3,8 @@ from init import db, bcrypt
 from models.user import User
 from models.diary import Diary
 from models.meal import Meal
-from models.diary_entry import Diary_Entry
+from models.diary_entry import DiaryEntry
+from models.health_analysis import HealthAnalysis
 from datetime import date
 
 db_commands = Blueprint('db', __name__)
@@ -49,10 +50,20 @@ def seed_db():
 
     db.session.add_all(meals)
 
+    ha = [
+        HealthAnalysis(
+            physical_change = "felt lethargic",
+            mood_change = "was angry"
+        )
+    ]
+
+    db.session.add_all(ha)
+
     diary_entries = [
-        Diary_Entry(
+        DiaryEntry(
             diary = diaries[0],
-            meal = meals[0]
+            meal = meals[0],
+            health_analysis = ha[0]
         )
     ]
 

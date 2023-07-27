@@ -5,6 +5,7 @@ from controllers.cli_controller import db_commands
 from controllers.auth_controller import auth_bp
 from controllers.diary_controller import diaries_bp
 from controllers.meal_controller import meals_bp
+from controllers.diary_entry_controller import diary_entry_bp
 
 def create_app():
     app = Flask(__name__)
@@ -23,5 +24,6 @@ def create_app():
     app.register_blueprint(auth_bp)
     app.register_blueprint(diaries_bp)
     app.register_blueprint(meals_bp)
+    app.register_blueprint(diary_entry_bp)
 
     return app
