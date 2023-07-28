@@ -4,7 +4,7 @@ from datetime import datetime
 
 class DiaryEntry(db.Model):
     __tablename__ = 'diary_entries'
-
+    
     diaries_diary_id = db.Column(db.Integer, db.ForeignKey('diaries.diary_id'), primary_key=True, nullable=False)
     meals_meal_id = db.Column(db.Integer, db.ForeignKey('meals.meal_id'), primary_key=True, nullable=False)
     health_analysis_ha_id = db.Column(db.Integer, db.ForeignKey('health_analysis.ha_id'), primary_key=True, nullable=False)

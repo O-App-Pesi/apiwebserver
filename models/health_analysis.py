@@ -13,7 +13,7 @@ class HealthAnalysis(db.Model):
 class HealthAnalysisSchema(ma.Schema):
     diary_entries = fields.List(fields.Nested('DiaryEntrySchema', exclude=['diary_entries']))
     class Meta:
-        fields = ('ha_id', 'physical_change', 'mood_change', 'diary_entry')
+        fields = ('ha_id', 'physical_change', 'mood_change')
 
 health_analysis_schema = HealthAnalysisSchema()
 ha_schema = HealthAnalysisSchema(many=True)

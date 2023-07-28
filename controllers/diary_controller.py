@@ -51,6 +51,7 @@ def update_one_card(diary_id):
     diary = db.session.scalar(stmt)
     if diary:
         diary.diary_title = body_data.get('diary_title') or diary.diary_title
+        db.session.commit()
         return diary_schema.dump(diary)
     else:
         return {'error': f'Diary not found with id {diary_id}'}, 404
