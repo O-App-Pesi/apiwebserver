@@ -17,10 +17,10 @@ class DiaryEntry(db.Model):
 class DiaryEntrySchema(ma.Schema):
     diary = fields.Nested('DiarySchema', exclude=['users_user_id', 'diary_id'])
     meal = fields.Nested('MealSchema', only=['meal_name', 'is_takeaway', 'kilojoules', 'notes'])
-    health_analysis = fields.Nested('HealthAnalysisSchema', exclude=['ha_id'])
+    health_analysis = fields.Nested('HealthAnalysisSchema')
     
     class Meta:
-        fields = ('diaries_diary_id', 'meals_meal_id', 'health_analysis_ha_id' 'timestamp', 'diary', 'meal')
+        fields = ('diaries_diary_id', 'meals_meal_id', 'health_analysis_ha_id' 'timestamp', 'diary', 'meal', 'health_analysis')
         ordered = True
 
 diary_entry_schema = DiaryEntrySchema()

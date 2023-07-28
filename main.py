@@ -5,6 +5,7 @@ from controllers.cli_controller import db_commands
 from controllers.auth_controller import auth_bp
 from controllers.diary_controller import diaries_bp
 from controllers.meal_controller import meals_bp
+from controllers.health_analysis_controller import health_analysis_bp
 from controllers.diary_entry_controller import diary_entry_bp
 
 def create_app():
@@ -25,5 +26,6 @@ def create_app():
     app.register_blueprint(diaries_bp)
     app.register_blueprint(meals_bp)
     app.register_blueprint(diary_entry_bp)
+    app.register_blueprint(health_analysis_bp)
 
     return app

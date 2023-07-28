@@ -45,7 +45,14 @@ def seed_db():
             is_takeaway = True,
             kilojoules = 8000,
             notes = "made me fart"
-        )
+        ),
+        Meal(
+            user = users[0],
+            meal_name = "Chicken Special",
+            is_takeaway = True,
+            kilojoules = 5000,
+            notes = "rejuvenating"
+        ),
     ]
 
     db.session.add_all(meals)
@@ -54,7 +61,12 @@ def seed_db():
         HealthAnalysis(
             physical_change = "felt lethargic",
             mood_change = "was angry"
+        ),
+        HealthAnalysis(
+            physical_change = "explosive diarrhoea",
+            mood_change = "Felt Bubbly"
         )
+
     ]
 
     db.session.add_all(ha)
@@ -64,7 +76,12 @@ def seed_db():
             diary = diaries[0],
             meal = meals[0],
             health_analysis = ha[0]
-        )
+        ),
+        DiaryEntry(
+            diary = diaries[0],
+            meal = meals[1],
+            health_analysis = ha[1]
+        ),
     ]
 
     db.session.add_all(diary_entries)
