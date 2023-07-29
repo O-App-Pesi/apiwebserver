@@ -33,6 +33,10 @@ def seed_db():
         Diary(
             user = users[0],
             diary_title = "My First Diary"
+        ),
+        Diary(
+            user=users[0],
+            diary_title = "After Work Diary"
         )
     ]
 

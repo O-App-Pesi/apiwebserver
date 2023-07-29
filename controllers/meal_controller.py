@@ -42,7 +42,7 @@ def delete_one_meal(meal_id):
     if meal:
         db.session.delete(meal)
         db.session.commit()
-        return {'message': f'Meal {meal.meal_name} deleted successfully'}
+        return {'message': f'Meal: {meal.meal_name} deleted successfully'}
     else:
         return {'error': f'Meal not found with id {meal_id}'}, 404
     

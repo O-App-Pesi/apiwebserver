@@ -20,7 +20,7 @@ class DiaryEntrySchema(ma.Schema):
     health_analysis = fields.Nested('HealthAnalysisSchema')
     
     class Meta:
-        fields = ('diaries_diary_id', 'meals_meal_id', 'health_analysis_ha_id' 'timestamp', 'diary', 'meal', 'health_analysis')
+        fields = ('diaries_diary_id', 'meals_meal_id', 'health_analysis_ha_id', 'timestamp', 'diary', 'meal', 'health_analysis')
         ordered = True
 
 diary_entry_schema = DiaryEntrySchema()

@@ -39,7 +39,7 @@ def delete_one_diary(diary_id):
     if diary:
         db.session.delete(diary)
         db.session.commit()
-        return {'message': f'Diary {diary.diary_title} deleted successfully'}
+        return {'message': f'Diary: {diary.diary_title} deleted successfully'}
     else:
         return {'error': f'Diary not found with id {diary_id}'}, 404
     

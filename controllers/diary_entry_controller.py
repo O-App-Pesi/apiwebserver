@@ -1,7 +1,6 @@
 from flask import Blueprint, request
 from init import db
 from models.diary_entry import DiaryEntry, diary_entry_schema, diary_entries_schema
-from flask_jwt_extended import get_jwt_identity, jwt_required
 
 diary_entry_bp = Blueprint('diary_entries', __name__, url_prefix='/diaryentry')
 
@@ -24,7 +23,6 @@ def get_one_diary_entry(diaries_diary_id, meals_meal_id, health_analysis_ha_id):
         return {'error': 'An entry was not found with one or more specified ids'}, 404
     
 @diary_entry_bp.route('/', methods=['POST'])
-@jwt_required()
 def create_diary_entry():
     body_data = request.get_json()
     diary_entry = DiaryEntry(
@@ -38,7 +36,6 @@ def create_diary_entry():
     return diary_entry_schema.dump(diary_entry), 201
 
 @diary_entry_bp.route('/<int:diaries_diary_id>/<int:meals_meal_id>/<int:health_analysis_ha_id>', methods=['DELETE'])
-@jwt_required()
 def delete_one_diary(diaries_diary_id, meals_meal_id, health_analysis_ha_id):
     filter_data = {'diaries_diary_id': diaries_diary_id, 'meals_meal_id': meals_meal_id, 'health_analysis_ha_id': health_analysis_ha_id}
     filter_data = {key: value for (key, value) in filter_data.items() if value}
@@ -52,7 +49,6 @@ def delete_one_diary(diaries_diary_id, meals_meal_id, health_analysis_ha_id):
         return {'error': 'Diary not found with one or more specified IDs'}, 404
     
 @diary_entry_bp.route('/<int:diaries_diary_id>/<int:meals_meal_id>/<int:health_analysis_ha_id>', methods=['PUT', 'PATCH'])
-@jwt_required()
 def update_one_diary(diaries_diary_id, meals_meal_id, health_analysis_ha_id):
     body_data = request.get_json()
     filter_data = {'diaries_diary_id': diaries_diary_id, 'meals_meal_id': meals_meal_id, 'health_analysis_ha_id': health_analysis_ha_id}
