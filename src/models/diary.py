@@ -1,5 +1,6 @@
 from init import db, ma
 from marshmallow import fields
+from marshmallow.validate import Length, And, Regexp
 
 class Diary(db.Model):
     __tablename__ = "diaries"
@@ -14,6 +15,11 @@ class Diary(db.Model):
 class DiarySchema(ma.Schema):
     user = fields.Nested('UserSchema', only=['email'])
     diary_entries = fields.List(fields.Nested('DiarySchema'), exclude=['diary'])
+
+    diary_title = fields.String(required=True, validate=And(
+        Length(min=5, error='Title must be at least 5 characters long'),
+        Regexp('^[a-zA-Z0-9 ]+$', error='Only letters, spaces and numbers are allowed')
+    ))
     class Meta:
         fields = ('diary_id', 'users_user_id', 'diary_title')
         ordered = True

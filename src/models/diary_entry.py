@@ -19,6 +19,7 @@ class DiaryEntrySchema(ma.Schema):
     meal = fields.Nested('MealSchema', only=['meal_name', 'is_takeaway', 'kilojoules', 'notes'])
     health_analysis = fields.Nested('HealthAnalysisSchema')
     
+    timestamp = fields.DateTime(required=True)
     class Meta:
         fields = ('diaries_diary_id', 'meals_meal_id', 'health_analysis_ha_id', 'timestamp', 'diary', 'meal', 'health_analysis')
         ordered = True

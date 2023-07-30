@@ -28,7 +28,7 @@ def get_one_diary_entry(diaries_diary_id, meals_meal_id, health_analysis_ha_id):
 #POST query, add a new entity to the diary_entries table
 @diary_entry_bp.route('/', methods=['POST'])
 def create_diary_entry():
-    body_data = request.get_json()
+    body_data = diary_entry_schema.load(request.get_json())
     diary_entry = DiaryEntry(
         diaries_diary_id=body_data.get('diaries_diary_id'),
         meals_meal_id=body_data.get('meals_meal_id'),

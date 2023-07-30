@@ -27,7 +27,7 @@ def get_one_meal(meal_id):
 @meals_bp.route('/', methods=['POST'])
 @jwt_required()
 def create_meal():
-    body_data = request.get_json()
+    body_data = meal_schema.load(request.get_json())
     meal = Meal(
         users_user_id=get_jwt_identity(),
         meal_name=body_data.get('meal_name'),
@@ -58,7 +58,7 @@ def delete_one_meal(meal_id):
 @meals_bp.route('/<int:meal_id>', methods=['PUT', 'PATCH'])
 @jwt_required()
 def update_one_card(meal_id):
-    body_data = request.get_json()
+    body_data = meal_schema.load(request.get_json())
     stmt = db.select(Meal).filter_by(meal_id=meal_id)
     meal = db.session.scalar(stmt)
     if meal:

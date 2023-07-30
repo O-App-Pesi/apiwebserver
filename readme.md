@@ -187,6 +187,14 @@ Authentication methods where applicable
 
 ### User/Authorisation
 
+**GET (Single) | localhost:8080/auth/1 | JSON Web Token | Response Data:**
+```
+{
+	"user_id": 1,
+	"email": "user@user.com"
+}
+```
+
 **POST | localhost:8080/auth/login | JSON Web Token | Required Data:**
 ```
 {
@@ -213,8 +221,32 @@ Authentication methods where applicable
 {
 	"user_id": 2,
 	"email": "user2@user.com",
-	"diaries": [],
-	"meals": []
+}
+```
+**PUT/PATCH | localhost:8080/auth/update/2 | JSON Web Token | Required Data:**
+```
+{
+	"email": "newemail@user.com",
+	"password": "newpassword"
+}
+```
+**Response Data:**
+```
+{
+	"email": "newemail@user.com",
+	"user_id": 2
+}
+```
+**DELETE | localhost:8080/auth/2 | JSON Web Token | Response Data:**
+```
+{
+	"message": "User with email: newemail@user.com deleted successfully"
+}
+```
+**DELETE | if no Entry:**
+```
+{
+	"error": "User not found with specified email"
 }
 ```
 
@@ -512,6 +544,8 @@ Each entity of the diary_entries relation has a diaries_diary_id, meals_meal_id,
 
 ## R10: Describe the way tasks are allocated and tracked in your project
 
+https://trello.com/invite/b/492R6pVv/ATTI7ad0644517782521b274457e0c5b32ce923D87AB/webserver-api
+
 ![trello board 1](docs/Trello%20Board%201.jpg)
 
 I used Trello to allocate tasks and track my project. I had 5 lists on my board with titles Workbook, Coding, Doing, Pending Review and Done. Workbook was where I listed each requirement for the documentation on a card. Coding was where I listed the programming requirements for the project. When I was working on a specific task, I would move the card to Doing until it was done. If I felt like I needed to review it again later, I would move the card to Pending Review. Once everything on the card was completed, I would finally move the card to Done.
@@ -523,3 +557,35 @@ For the documentation requirements that had specific criteria, I added a descrip
 ![Model](docs/Diary%20Entry%20Model.jpg)
 
 For each model, I added a CRUD checklist.
+
+## References 
+
+Abba, IV 2022, *What is an ORM -- The Meaning of Object Relational Mapping Database Tools*, July 30, 2023, https://www.freecodecamp.org/news/what-is-an-orm-the-meaning-of-object-relational-mapping-database-tools/.
+
+altexsoft 2019, "Comparing Database Management Systems: MySQL, PostgreSQL, MSSQL Server, MongoDB, Elasticsearch and others," *AltexSoft*, July 30, 2023, https://www.altexsoft.com/blog/business/comparing-database-management-systems-mysql-postgresql-mssql-server-mongodb-elasticsearch-and-others/.
+
+Boltic 2023, "PostgreSQL vs MySQL: Critical Differences & Key Features (Advantages & Disadvantages)," *Boltic*, July 30, 2023, https://www.boltic.io/blog/postgresql-performance-vs-mysql.
+
+Countryman, M 2011, *Flask-Bcrypt --- Flask-Bcrypt 1.0.1 documentation*, July 30, 2023, https://flask-bcrypt.readthedocs.io/en/1.0.1/.
+
+Drake, M 2014, *SQLite vs MySQL vs PostgreSQL: A Comparison Of Relational Database Management Systems*, July 30, 2023, https://www.digitalocean.com/community/tutorials/sqlite-vs-mysql-vs-postgresql-a-comparison-of-relational-database-management-systems#postgresql.
+
+Gilbert, L 2023, *Flask-JWT-Extended*, July 30, 2023, https://pypi.org/project/Flask-JWT-Extended/.
+
+Kong, Q, Siauw, T & Bayen, A 2020, *Python programming and Numerical Methods: A Guide for Engineers and Scientists*, Academic Press, https://pythonnumericalmethods.berkeley.edu/notebooks/chapter07.03-Inheritance-Encapsulation-and-Polymorphism.html.
+
+Linked In Team *How can you implement eager loading in ORM with different frameworks?*, July 16, 2023, https://www.linkedin.com/advice/3/how-can-you-implement-eager-loading.
+
+Linked In Team & Adnan Rafiq, M *What are some best practices for using ORM caching and lazy loading?*, July 16, 2023, https://www.linkedin.com/advice/1/what-some-best-practices-using-orm-1e.
+
+Loria, S 2023, *marshmallow*, July 30, 2023, https://pypi.org/project/marshmallow/.
+
+MongoDB *An Introduction to Data Persistence*, July 16, 2023, https://www.mongodb.com/databases/data-persistence.
+
+Python Basics *What is Flask Python - Python Tutorial*, July 30, 2023, https://pythonbasics.org/what-is-flask-python/.
+
+'Tofunmi O., P 2015, "A Brief Explanation of Database abstraction Layer: Writing database queries for the future," *Medium*, July 16, 2023, https://medium.com/@paultofunmi/a-brief-explanation-of-database-abstraction-layer-writing-database-queries-for-the-future-7a1c84c9a45d.
+
+TrustRadius 2021, *What's the best RDBMS? PostgreSQL vs MySQL*, *YouTube*, July 30, 2023, https://www.youtube.com/watch?v=EOTY-p5h74E.
+
+uniwebsidad *8.1. Why Use an ORM and an Abstraction Layer? (The definitive guide of Symfony 1.2)*, July 16, 2023, https://uniwebsidad.com/libros/symfony-1-2-en/chapter-8/why-use-an-orm-and-an-abstraction-layer.

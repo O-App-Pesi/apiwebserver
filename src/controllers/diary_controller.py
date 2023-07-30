@@ -27,7 +27,7 @@ def get_one_diary(diary_id):
 @diaries_bp.route('/', methods=['POST'])
 @jwt_required()
 def create_diary():
-    body_data = request.get_json()
+    body_data = diary_schema.load(request.get_json())
     diary = Diary(
         users_user_id=get_jwt_identity(),
         diary_title=body_data.get('diary_title')
@@ -55,7 +55,7 @@ def delete_one_diary(diary_id):
 @diaries_bp.route('/<int:diary_id>', methods=['PUT', 'PATCH'])
 @jwt_required()
 def update_one_card(diary_id):
-    body_data = request.get_json()
+    body_data = diary_schema.load(request.get_json())
     stmt = db.select(Diary).filter_by(diary_id=diary_id)
     diary = db.session.scalar(stmt)
     if diary:

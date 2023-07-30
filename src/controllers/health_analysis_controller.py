@@ -24,7 +24,7 @@ def get_one_health_analysis(ha_id):
 #POST query, adds a new entity to the health_analysis table
 @health_analysis_bp.route('/', methods=['POST'])
 def create_health_analysis():
-    body_data = request.get_json()
+    body_data = health_analysis_schema.load(request.get_json())
     health_analysis = HealthAnalysis(
         physical_change=body_data.get('physical_change'),
         mood_change=body_data.get('mood_change'),
@@ -48,7 +48,7 @@ def delete_one_health_analysis(ha_id):
 #PUT/PATCH query, updates and entity in the health_analysis table based on ha_id
 @health_analysis_bp.route('/<int:ha_id>', methods=['PUT', 'PATCH'])
 def update_one_card(ha_id):
-    body_data = request.get_json()
+    body_data = health_analysis_schema.load(request.get_json())
     stmt = db.select(HealthAnalysis).filter_by(ha_id=ha_id)
     health_analysis = db.session.scalar(stmt)
     if health_analysis:
