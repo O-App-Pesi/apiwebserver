@@ -8,6 +8,8 @@ from datetime import timedelta
 
 auth_bp = Blueprint('auth', __name__, url_prefix='/auth')
 
+#GET query, retrieves user entity from the database with matching user_id
+#User must be logged in, action authenticated by jwt_required
 @auth_bp.route('/<int:user_id>')
 @jwt_required()
 def get_user(user_id):
@@ -18,6 +20,8 @@ def get_user(user_id):
     else:
         return {'error': f'User not found'}, 404
 
+#POST query, adds a new entity to the database from input data
+#throws an error if the email is not unique or if the column is not nullable
 @auth_bp.route('/register', methods=['POST'])
 def auth_register():
     try:
@@ -38,7 +42,8 @@ def auth_register():
             return {'error': 'Email address already in use'}, 409
         if err.orig.pgcode == errorcodes.NOT_NULL_VIOLATION:
             return {'error': f'The {err.orig.diag.column_name} is required'}, 409
-        
+
+#POST query, matches a user in the database and logs them in        
 @auth_bp.route('/login', methods=['POST'])
 def auth_login():
     body_data = request.get_json()
@@ -52,7 +57,8 @@ def auth_login():
     else:
         return { 'error': 'Invalid email or password' }, 401
     
-
+#PUT/PATCH query, updates an entity in the user table
+#User must be logged in, action authenticated by jwt_required
 @auth_bp.route('/update/<int:user_id>', methods=['PUT', 'PATCH'])
 @jwt_required()
 def auth_update_user(user_id):
@@ -75,8 +81,11 @@ def auth_update_user(user_id):
             return {'error': 'Email address already in use'}, 409
         if err.orig.pgcode == errorcodes.NOT_NULL_VIOLATION:
             return {'error': f'The {err.orig.diag.column} is required'}, 409
-        
+
+#DELETE query, deletes an entity from the user table based on user_id
+#User must be logged in, action authenticated by jwt_required
 @auth_bp.route('/<int:user_id>', methods=['DELETE'])
+@jwt_required()
 def delete_user(user_id):
     stmt = db.select(User).filter_by(user_id=user_id)
     user = db.session.scalar(stmt)
