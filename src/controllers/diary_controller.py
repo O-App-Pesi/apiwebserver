@@ -33,6 +33,7 @@ def create_diary():
     return diary_schema.dump(diary), 201
 
 @diaries_bp.route('/<int:diary_id>', methods=['DELETE'])
+@jwt_required()
 def delete_one_diary(diary_id):
     stmt = db.select(Diary).filter_by(diary_id=diary_id)
     diary = db.session.scalar(stmt)

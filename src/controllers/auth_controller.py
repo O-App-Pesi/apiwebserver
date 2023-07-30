@@ -1,12 +1,22 @@
 from flask import Blueprint, request
 from init import db, bcrypt
 from models.user import User, user_schema, users_schema
-from flask_jwt_extended import create_access_token
+from flask_jwt_extended import create_access_token, jwt_required
 from sqlalchemy.exc import IntegrityError
 from psycopg2 import errorcodes
 from datetime import timedelta
 
 auth_bp = Blueprint('auth', __name__, url_prefix='/auth')
+
+@auth_bp.route('/<int:user_id>')
+@jwt_required()
+def get_user(user_id):
+    stmt = db.select(User).filter_by(user_id=user_id)
+    user = db.session.scalar(stmt) #single scalar
+    if user:
+        return user_schema.dump(user)
+    else:
+        return {'error': f'User not found'}, 404
 
 @auth_bp.route('/register', methods=['POST'])
 def auth_register():
@@ -41,3 +51,38 @@ def auth_login():
         return { 'email': user.email, 'token': token }
     else:
         return { 'error': 'Invalid email or password' }, 401
+    
+
+@auth_bp.route('/update/<int:user_id>', methods=['PUT', 'PATCH'])
+@jwt_required()
+def auth_update_user(user_id):
+    try:
+        body_data = request.get_json()
+
+        stmt = db.select(User).filter_by(user_id=user_id)
+        user = db.session.scalar(stmt)
+        if user:
+            if body_data.get('password'):
+                user.password = bcrypt.generate_password_hash(body_data.get('password')).decode('utf-8') or user.password
+            user.email = body_data.get('email') or user.email
+        db.session.add(user)
+
+        db.session.commit()
+
+        return user_schema.dump(user), 201
+    except IntegrityError as err:
+        if err.orig.pgcode == errorcodes.UNIQUE_VIOLATION:
+            return {'error': 'Email address already in use'}, 409
+        if err.orig.pgcode == errorcodes.NOT_NULL_VIOLATION:
+            return {'error': f'The {err.orig.diag.column} is required'}, 409
+        
+@auth_bp.route('/<int:user_id>', methods=['DELETE'])
+def delete_user(user_id):
+    stmt = db.select(User).filter_by(user_id=user_id)
+    user = db.session.scalar(stmt)
+    if user:
+        db.session.delete(user)
+        db.session.commit()
+        return {'message': f'User with email: {user.email} deleted successfully'}
+    else:
+        return {'error': f'User not found with specified email'}, 404
