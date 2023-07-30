@@ -1,26 +1,34 @@
-## Identification of the problem you are trying to solve by building this particular app.
+## R1: Identification of the problem you are trying to solve by building this particular app.
 
 Keeping track of different foods and how they affect our body.
 
-## Why is it a problem that needs solving?
+## R2: Why is it a problem that needs solving?
 
 It is easy to lose track of what you have eaten. Often we reach for snacks or something quick to eat but don't have the time to consider how this might affect us. If we keep track of this in a diary then we can become aware of our habits and use the data to inform our future choices. This may not just be about weightloss but also about how different foods affect our bodies or just to know how often we eat. Especially if we go out to eat, we might not be able to find out every ingredient but keeping track of how the food made us feel can be very useful. We want to have a balanced diet but our confirmation bias and memory can often let us down, having a diary to track everything uniformly can help keep us accountable.
 
-## Why have you chosen this database system. What are the drawbacks compared to others?
+## R3: Why have you chosen this database system?
 
+PostgreSQL is an open source database management system. This means that it is good for students because it doesn't require any cost to use. PostgreSQL also natively supports JSON and Binary JSON making it perfect for developing a webserver API.
 
+## What are the drawbacks compared to others?
 
-## Identify and discuss the key functionalities and benefits of an ORM
+When there are a lot of small read-operations to the database, PostgreSQL performs poorly. This is because of the way PostgreSQL handles new client connections, it uses about 10MB of data to fork a new process every time. If there are many small read-operations that need to be completed, PostgreSQL handles them cumbersomely. MySQL is a database that can handle lots of connections more efficiently as it was developed to prioritize speed (Drake, 2014).   
+PostgreSQL is fully open source which means that it is maintained by volunteer contributors. Anyone can add to PostgreSQL and the code base can be manipulated to suit an individuals needs even for commercial operations. However, this has the drawback of having an inconsistent and incomplete documentation since it is not managed by any singular entity. Databases systems such as Oracle and even MySQL, which also has an open source version, are owned by the company Oracle so there is a more strict of cohesive development plan in place. This means the documentation is likely to be more consistent and up to date.   
+PostgreSQL has a high skill ceiling and requires a knowledgeable team of engineers to get the most out its functionality. PostgreSQL is well known for its complex queries meaning that it can be used to narrow down data for high level functions. This means that it is not as beginner friendly as a database system like MySQL which is more simple. To put it simply, the bar to entry is quite high and PostgreSQL would take time to implement and understand for those unfamiliar with it.
+
+## R4: Identify and discuss the key functionalities and benefits of an ORM
 
 **Database Abstraction Layer**   
 Each database uses its own query structure. For example, if you start building an application for the Oracle database but then later switch to using PostgreSQL, you will have to alter the queries. If you build your an application with an ORM then you will not need to change your application's code if you decide the switch databases. The syntax used by ORM's is independent of the database and so can interact with any database.  
+
 **Object Oriented Programming**  
 Using an ORM allows developers to create an API which uses the OOP concepts of inheritance, encapsulation and polymorphism. Developers can use classes, build with functions and use things like loops to build the database queries. This makes it much easier for developers since they can work with a language that they already know and don't have to learn the SQL syntax for the database. This is because the ORM handles the data persistence in the database.  
-Using a programming language like Python makes the API much more readable than the raw SQL syntax. It also makes it easier to be maintained for developers who are comfortable using Python. Development time can be spent elsewhere since developers don't need to spend time working with the database interactions. The schema in the database are managed by the ORM which maintains the data consistency. 
-**Lazy Loading, Eager Loading, and Caching**  
+Using a programming language like Python makes the API much more readable than the raw SQL syntax. It also makes it easier to be maintained for developers who are comfortable using Python. Development time can be spent elsewhere since developers don't need to spend time working with the database interactions. The schema in the database are managed by the ORM which maintains the data consistency.  
+
+**Lazy Loading, Eager Loading, and Caching**   
 ORMs provide the ability to manage the way the data is accessed. For example, lazy loading allows developers to query only the specific data that they need, such as just the user data. Eager loading is the opposite of this, where everything is loaded. Caching allows query results to be stored for later, this reduces the number of times the database needs to be accessed. With these three different options, developers have a way to regulate the data access and manage things like the network load.  
 
-## Document all endpoints for your API
+## R5: Document all endpoints for your API
 
 Endpoint documentation should include
 HTTP request verb
@@ -431,3 +439,87 @@ Authentication methods where applicable
 	"physical_change": "felt hungry"
 }
 ```
+
+## R6: An ERD for your App
+
+![ERD](docs/ERD%20Final.jpg)
+
+
+## R7: Detail any third party services that your app will use
+
+### Flask  
+Flask is a python web framework. It uses the Web Server Gateway Interface (WSGI), Werkzeug and jinja2 to creates apps that are simple and scalable. Flask is known as a microframework because it can be built on with other python libraries (Python Tutorial, 2021).
+
+### Marshmallow
+Marshmallow is an Object Relational Mapper (ORM). ORMs enable apps written in a language like Python to communicate with relational databases. Marshmallow does not depend on any specific framework to function. Marshmallow converts complex data types to Python native data types (Loria, 2023). 
+
+### Bcrypt  
+Bcrypt is used to create hashed passwords. Hashed passwords are hidden passwords that do not represent the actual password but a string of characters. This way, passwords are stored on the database by a representation and cannot be directly intercepted during queries.
+
+### Flask-JWT-Extended
+JWT-Extended provides functionality for using JSON Web Tokens. It allows the use of JWTs to protect controller routes. 
+Further functionalities include: "Adding custom claims to JSON Web Tokens, automatic user loading (current_user), custom claims validation on received tokens, refresh tokens, first class support for fresh tokens for making sensitive changes,token revoking/blocklisting, storing tokens in cookies and CSRF protection" (Gilbert, 2023, Features).
+
+## R8 Describe your projects models in terms of the relationships they have with each other
+
+The user model has:  
+- a user_id which is a primary key, and an integer
+- an email which is a String of 255 characters, not nullable and must be unique
+- a password which is a String of 255 characters and not nullable.
+- a diaries field which nests the related data from the diaries table and will cascade delete the related entities
+- a meals field which nests the related data from the meals table and will cascade delete the related entities   
+
+The diary model has:
+- a diary_id which is a primary key, and an integer
+- users_user_id which is a foreign key, an integer and not nullable
+- a diary_title which is a String of 100 characters
+- a user fields which nests the related data from the user table 
+- a diary_entries field which nests the related data from the diary_entries table
+
+The meal model has:
+- a meal_id which is a primary key, and an integer
+- a users_user_id which is a foreign key, an integer and is not nullable
+- a meal_name which is a String with 100 characters
+- an is_takeaway field which is a boolean
+- kilojoules which is an integer and is not nullable
+- notes which is a String of 255 characters
+- a user fields which nests the related data from the user table 
+- a diary_entries field which nests the related data from the diary_entries table  
+
+The diary_entry model has:
+- a diaries_diary_id which is a composite key, an integer and not nullable
+- a meals_meal_id which is a composite key, an integer and not nullable
+- a health_analysis_ha_id which is a composite key, an integer and not nullable
+- a diary field which nests the related data from the diaries table
+- a meal field which nests the related data from the meals table
+- a health_analysis field which nests the related data from the health_analysis table   
+
+The heal_analysis model has:
+- a ha_id which is a primary key, and an integer
+- a physical_change which is a String with 255 characters and not nullable
+- a mood_change which is a String with 255 characters and not nullable
+- a diary_entries field which nests the related data from the meals table and cascade deletes the related entities
+
+## R9: Discuss the database relations to be implemented in your application  
+
+Each entity of the users relation has a user_id, email and password field. User_id is the primary key. Users shares its primary key with the meals and diaries relations. One user has zero or many diaries, and one user has zero or many meals.  
+Each entity of the diaries relation has a diary_id, users_user_id and a diary_title. The users_user_id is the foreign key pointing back to an entity in the users relation. The diary_id is the primary key. Diaries shares its primary key with the diary_entries relation. One diaries entity has zero or many diary_entries, but each diary_entries entity has one and only one diaries entity.   
+Each entity of the meals relation has a meal_id, users_user_id, meal_name, is_takeaway, kilojoules and notes field. The users_user_id is the foreign key pointing back to an entity in the users relation. The meal_id is the primary key. Meals shares its primary key with the diary_entries relation. One meals entity has zero or many diary_entries, but each diary_entries entity has one and only one meals entity.   
+The meals and diaries relations have a many to many relationship with diary_entries as the join relation.   
+Each entity of the health_analysis relation has a ha_id, physical_change and mood_change field. The ha_id is the primary key. Health_analysis shares its primary key with the diary_entries relation. One health_analysis entity has zero or more diary_entries, but each diary_entries entity has one and only one health_analysis entity.   
+Health_analysis also has a many to many relationship with meals and diaries. Each health_analysis entity can have zero or many diaries and zero or many meals. Each meals entity can have zero or many health_analysis. Each diaries entity can have zero or many health_analysis.   
+Each entity of the diary_entries relation has a diaries_diary_id, meals_meal_id, health_analysis_ha_id, and a timestamp. The diary_entries relation exists as a join table for the diaries, meals and health_analysis relation. The diaries_diary_id, meals_meal_id and health_analysis_ha_id act as a composite primary key, each is also a foreign key pointing back to their respective relations of diaries, meals and health_analysis.
+
+## R10: Describe the way tasks are allocated and tracked in your project
+
+![trello board 1](docs/Trello%20Board%201.jpg)
+
+I used Trello to allocate tasks and track my project. I had 5 lists on my board with titles Workbook, Coding, Doing, Pending Review and Done. Workbook was where I listed each requirement for the documentation on a card. Coding was where I listed the programming requirements for the project. When I was working on a specific task, I would move the card to Doing until it was done. If I felt like I needed to review it again later, I would move the card to Pending Review. Once everything on the card was completed, I would finally move the card to Done.
+
+![R5](docs/R5%20Trello%20Board.jpg)
+
+For the documentation requirements that had specific criteria, I added a description.
+
+![Model](docs/Diary%20Entry%20Model.jpg)
+
+For each model, I added a CRUD checklist.

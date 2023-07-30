@@ -10,9 +10,9 @@ class DiaryEntry(db.Model):
     health_analysis_ha_id = db.Column(db.Integer, db.ForeignKey('health_analysis.ha_id'), primary_key=True, nullable=False)
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
 
-    diary = db.relationship('Diary', back_populates='diary_entries', uselist=False)
-    meal = db.relationship('Meal', back_populates='diary_entries', uselist=False)
-    health_analysis = db.relationship('HealthAnalysis', back_populates='diary_entries', uselist=False)
+    diary = db.relationship('Diary', back_populates='diary_entries')
+    meal = db.relationship('Meal', back_populates='diary_entries')
+    health_analysis = db.relationship('HealthAnalysis', back_populates='diary_entries')
 
 class DiaryEntrySchema(ma.Schema):
     diary = fields.Nested('DiarySchema', exclude=['users_user_id', 'diary_id'])
